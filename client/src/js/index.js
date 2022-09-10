@@ -1,17 +1,16 @@
+//import functions
 import { fetchCards } from './cards';
-import Logo from '../images/logo.png';
-import Bear from '../images/bear.png';
-import Dog from '../images/dog.png';
-//import modules
-import "./form";
+import { initdb, postDb } from './database';
+import { toggleForm, clearForm } from './form';
 //import css files
 import "../css/index.css";
 //css & bootstrap stuff
 import { Tooltip, Toast, Popover } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { initdb, getDb, postDb } from './database';
-import { fetchCards } from './cards';
-import { toggleForm, clearForm } from './form';
+//import images 
+import Logo from '../images/logo.png';
+import Bear from '../images/bear.png';
+import Dog from '../images/dog.png';
 
 window.addEventListener('load', function () {
     initdb();
@@ -41,19 +40,28 @@ window.addEventListener('load', function () {
   let profile = document.querySelector('input[type="radio"]:checked').value;
   
     // Post form data to IndexedDB OR Edit an existing card in IndexedDB
-  if (submitBtnToUpdate == false) {
-    postDb(name, email, phone, profile);
-  } else {
-  
-    fetchCards();
-      // Toggles the submit button back to POST functionality
-    submitBtnToUpdate = false;
-  }
-  
-  // Clear form
-  clearForm();
-  // Toggle form
-  toggleForm();
-  // Reload the DOM
-  fetchCards();
+      if (submitBtnToUpdate == false) {
+          postDb(name, email, phone, profile);
+      } else {
+
+          // Obtains values passed into the form element
+          let name = document.getElementById("name").value;
+          let phone = document.getElementById("phone").value;
+          let email = document.getElementById("email").value;
+          let profile = document.querySelector('input[type="radio"]:checked').value;
+
+          // Calls the editDB function passing in any values from the form element as well as the ID of the contact that we are updating
+          editDb(profileId, name, email, phone, profile);
+
+          fetchCards();
+          // Toggles the submit button back to POST functionality
+          submitBtnToUpdate = false;
+      }
+
+      // Clear form
+      clearForm();
+      // Toggle form
+      toggleForm();
+      // Reload the DOM
+      fetchCards();
   });
