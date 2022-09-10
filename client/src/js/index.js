@@ -1,6 +1,6 @@
 //import functions
 import { fetchCards } from './cards';
-import { initdb, postDb } from './database';
+import { initdb, postDb, deleteDb } from './database';
 import { toggleForm, clearForm } from './form';
 //import css files
 import "../css/index.css";
@@ -62,6 +62,17 @@ window.addEventListener('load', function () {
       clearForm();
       // Toggle form
       toggleForm();
-      // Reload the DOM
-      fetchCards();
+      //reload the dom
+      fetchCards();    
   });
+
+  window.deleteCard = (e) => {
+    //grabs the id from the button elements attached to the contact card
+    let id = parseInt(e.id);
+
+    //delete the card
+    deleteDb(id);
+
+    //reload the dom
+    fetchCards();
+  };
